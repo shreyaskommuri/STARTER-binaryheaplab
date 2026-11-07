@@ -19,7 +19,7 @@ class Heap{
     bool empty();
 
  private:
-    std::vector<int> vdata; //store the binary heap tree as a dynamic array
+    std::vector<int> heapData; //store the binary heap tree as a dynamic array
 };
 
 #endif

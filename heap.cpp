@@ -1,36 +1,63 @@
-// heap.cpp
-// Diba Mirza
-
 #include "heap.h"
-#include <iostream>
-using std::cout;
+#include <utility>
 
-// Builds a heap from the range [start, end) using the heapify algorithm
-// Should run in O(n) time
-Heap::Heap(std::vector<int>::iterator start, std::vector<int>::iterator end){
-
+Heap::Heap(std::vector<int>::iterator start, std::vector<int>::iterator end)
+    : heapData(start, end) {
+    int size = heapData.size();
+    for (int i = size / 2 - 1; i >= 0; i--) {
+        int parent = i;
+        while (2 * parent + 1 < size) {
+            int child = 2 * parent + 1;
+            if (child + 1 < size && heapData[child + 1] < heapData[child]) {
+                child++;
+            }
+            if (heapData[parent] <= heapData[child]) {
+                break;
+            }
+            std::swap(heapData[parent], heapData[child]);
+            parent = child;
+        }
+    }
 }
 
-// Pushes a value into the heap, then ensures
-// the heap is correctly arranged
-void Heap::push(int value){
-
+void Heap::push(int value) {
+    heapData.push_back(value);
+    int child = heapData.size() - 1;
+    while (child > 0) {
+        int parent = (child - 1) / 2;
+        if (heapData[parent] <= heapData[child]) {
+            break;
+        }
+        std::swap(heapData[parent], heapData[child]);
+        child = parent;
+    }
 }
 
-// Pops the minimum value off the heap
-// (but does not return it), then ensures
-// the heap is correctly arranged
-void Heap::pop(){
-
+void Heap::pop() {
+    if (heapData.empty()) {
+        return;
+    }
+    heapData[0] = heapData.back();
+    heapData.pop_back();
+    int size = heapData.size();
+    int parent = 0;
+    while (2 * parent + 1 < size) {
+        int child = 2 * parent + 1;
+        if (child + 1 < size && heapData[child + 1] < heapData[child]) {
+            child++;
+        }
+        if (heapData[parent] <= heapData[child]) {
+            break;
+        }
+        std::swap(heapData[parent], heapData[child]);
+        parent = child;
+    }
 }
 
-// Returns the minimum element in the heap
-int Heap::top(){
-  return 0;
+int Heap::top() {
+    return heapData.at(0);
 }
 
-// Returns true if the heap is empty, false otherwise
-bool Heap::empty(){
-  return true;
+bool Heap::empty() {
+    return heapData.empty();
 }
-    
